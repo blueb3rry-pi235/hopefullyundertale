@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Undertale Web Edition</title>
+<link rel="stylesheet" href="boxedwine.css">
+</head>
+<body>
+<div id="loading" style="color: white; text-align: center; margin-top: 20%;">Loading Emulator Brain...</div>
+<canvas id="canvas" style="display:none;" width="800" height="600" oncontextmenu="event.preventDefault()"></canvas>
+
+<script>
+var Config = {
+// Tells the emulator engine to boot the game executable inside the zip
+arguments: ["/home/username/UNDERTALE.zip/UNDERTALE.exe"],
+canvas: document.getElementById('canvas'),
+
+// PASTE YOUR REAL DROPBOX LINK (ENDING IN dl=1) IN THE QUOTES BELOW:
+zipUrl: "https://www.dropbox.com/scl/fi/0hirekpvmmy81jpn9vgei/UNDERTALE.zip?rlkey=orlz81z7u7o80fr0ncspdrhvx&st=v0lwchkb&dl=1",
+
+// Uses global CDN servers to stream the heavy core emulator assets
+baseUrl: "https://boxedwine.org",
+wasmUrl: "https://boxedwine.orgboxedwine.wasm"
+};
+
+// Reveal the canvas once the engine loads
+window.addEventListener('load', function() {
+setTimeout(function() {
+document.getElementById('loading').style.display = 'none';
+document.getElementById('canvas').style.display = 'block';
+}, 3000);
+});
+</script>
+<script src="https://boxedwine.orgboxedwine.js"></script>
+</body>
+</html>
