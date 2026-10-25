@@ -5,36 +5,51 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Undertale Web Edition</title>
 <link rel="stylesheet" href="boxedwine.css">
+<style>
+body { margin: 0; background: #000; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+#canvas { display: none; border: 3px solid #333; image-rendering: pixelated; }
+#status { font-size: 20px; cursor: pointer; text-align: center; padding: 20px; border: 2px dashed #444; border-radius: 8px; background: #111; }
+</style>
 </head>
 <body>
-<div id="loading" style="color: white; text-align: center; margin-top: 20%;">Loading Emulator Brain...</div>
-<canvas id="canvas" style="display:none;" width="800" height="600" oncontextmenu="event.preventDefault()"></canvas>
+
+<div id="status" onclick="startEmulator()">Click Anywhere on this Screen to Load Undertale</div>
+<canvas id="canvas" width="800" height="600" oncontextmenu="event.preventDefault()"></canvas>
 
 <script>
+// Consolidated configuration mapping to your local repository assets
 var Config = {
-// 1. Force the virtual computer to open the Undertale folder directory first
 workingDirectory: "c:\\Undertale",
-
-// 2. Execute the game from inside that mounted folder path
 arguments: ["c:\\Undertale\\UNDERTALE.exe"],
 canvas: document.getElementById('canvas'),
 
-// Your real Dropbox direct download link
-zipUrl: "https://dropbox.com",
+// Your active direct Dropbox stream link
+zipUrl: "https://www.dropbox.com/scl/fi/0hirekpvmmy81jpn9vgei/UNDERTALE.zip?rlkey=orlz81z7u7o80fr0ncspdrhvx&st=v0lwchkb&dl=1",
 
-// Uses global CDN servers to stream the core emulator assets
-baseUrl: "https://boxedwine.org",
-wasmUrl: "https://boxedwine.orgboxedwine.wasm"
+// Corrected to look inside your own GitHub repo directory for the assets
+baseUrl: "",
+wasmUrl: "boxedwine.wasm"
 };
 
-// Reveal the canvas once the engine loads
-window.addEventListener('load', function() {
+function startEmulator() {
+var statusDiv = document.getElementById('status');
+statusDiv.innerHTML = "Downloading & Unpacking Undertale from Dropbox... Please wait.";
+statusDiv.style.pointerEvents = "none"; // Prevent multiple clicks
+
+// Inject your local script into the webpage context
+var script = document.createElement('script');
+script.src = "boxedwine-shell.js";
+
+script.onload = function() {
+// Reveal the canvas interface frame dynamically once setup finishes
 setTimeout(function() {
-document.getElementById('loading').style.display = 'none';
+statusDiv.style.display = 'none';
 document.getElementById('canvas').style.display = 'block';
-}, 3000);
-});
+}, 4000);
+};
+
+document.body.appendChild(script);
+}
 </script>
-<script src="https://boxedwine.orgboxedwine.js"></script>
 </body>
 </html>
