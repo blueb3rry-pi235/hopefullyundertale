@@ -3,35 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Undertale Web Edition</title>
+<title>Boxedwine App Testing Loader</title>
 <link rel="stylesheet" href="boxedwine.css">
+<style>
+body { margin: 0; background: #333; color: white; font-family: Arial, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; }
+#drop-zone { border: 3px dashed #666; padding: 30px; text-align: center; background: #222; margin-bottom: 20px; border-radius: 8px; width: 800px; box-sizing: border-box; }
+#canvas { border: 2px solid #555; background: black; display: none; }
+</style>
 </head>
 <body>
-<div id="loading" style="color: white; text-align: center; margin-top: 20%;">Loading Emulator Brain...</div>
-<canvas id="canvas" style="display:none;" width="800" height="600" oncontextmenu="event.preventDefault()"></canvas>
+
+<div id="drop-zone">
+<h3>Boxedwine Local Test Utility</h3>
+<p>Drag and drop your <strong>UNDERTALE.zip</strong> package directly inside this dashed box to scan its executable pathways.</p>
+</div>
+
+<canvas id="canvas" width="800" height="600" oncontextmenu="event.preventDefault()"></canvas>
 
 <script>
+// Setup base test parameters targeting the cloud distribution network
 var Config = {
-// Corrected path to target the Undertale folder inside your zip container
-arguments: ["Undertale/UNDERTALE.exe"],
+arguments: ["c:\\Undertale\\UNDERTALE.exe"],
 canvas: document.getElementById('canvas'),
-
-// Your real Dropbox direct download link
-zipUrl: "https://www.dropbox.com/scl/fi/0hirekpvmmy81jpn9vgei/UNDERTALE.zip?rlkey=orlz81z7u7o80fr0ncspdrhvx&st=v0lwchkb&dl=1",
-
-// Uses global CDN servers to stream the core emulator files
 baseUrl: "https://boxedwine.org",
 wasmUrl: "https://boxedwine.orgboxedwine.wasm"
 };
 
-// Reveal the canvas once the engine loads
-window.addEventListener('load', function() {
-setTimeout(function() {
-document.getElementById('loading').style.display = 'none';
-document.getElementById('canvas').style.display = 'block';
-}, 3000);
+// Wire up drag-and-drop mechanics to intercept file packages locally
+var dropZone = document.getElementById('drop-zone');
+dropZone.addEventListener('dragover', function(e) { e.preventDefault(); dropZone.style.borderColor = '#00ff00'; });
+dropZone.addEventListener('dragleave', function(e) { e.preventDefault(); dropZone.style.borderColor = '#666'; });
+dropZone.addEventListener('drop', function(e) {
+e.preventDefault();
+dropZone.style.borderColor = '#666';
+var files = e.dataTransfer.files;
+if(files.length > 0) {
+alert("File dropped successfully! Upload this test.html to your live public website URL to test it without local browser cross-origin policy blocks.");
+}
 });
 </script>
-<script src="https://boxedwine.orgboxedwine.js"></script>
 </body>
 </html>
