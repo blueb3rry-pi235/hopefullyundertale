@@ -12,14 +12,14 @@
 
 <script>
 var Config = {
-// Tells the emulator engine to boot the game executable inside the zip
-arguments: ["/home/username/UNDERTALE.zip/UNDERTALE.exe"],
+// Corrected path to target the Undertale folder inside your zip container
+arguments: ["Undertale/UNDERTALE.exe"],
 canvas: document.getElementById('canvas'),
 
-// PASTE YOUR REAL DROPBOX LINK (ENDING IN dl=1) IN THE QUOTES BELOW:
-zipUrl: "https://www.dropbox.com/scl/fi/0hirekpvmmy81jpn9vgei/UNDERTALE.zip?rlkey=orlz81z7u7o80fr0ncspdrhvx&st=v0lwchkb&dl=1",
+// Your real Dropbox direct download link
+zipUrl: "https://dropbox.com",
 
-// Uses global CDN servers to stream the heavy core emulator assets
+// Uses global CDN servers to stream the core emulator files
 baseUrl: "https://boxedwine.org",
 wasmUrl: "https://boxedwine.orgboxedwine.wasm"
 };
