@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Undertale Web Edition</title>
-<link rel="stylesheet" href="boxedwine.css">
 <style>
 body { margin: 0; background: #000; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
 #canvas { display: none; border: 3px solid #333; image-rendering: pixelated; }
@@ -17,35 +16,40 @@ body { margin: 0; background: #000; color: #fff; font-family: sans-serif; displa
 <canvas id="canvas" width="800" height="600" oncontextmenu="event.preventDefault()"></canvas>
 
 <script>
-// Consolidated configuration mapping to your local repository assets
 var Config = {
 workingDirectory: "c:\\Undertale",
 arguments: ["c:\\Undertale\\UNDERTALE.exe"],
 canvas: document.getElementById('canvas'),
 
-// Your active direct Dropbox stream link
+// Your working direct Dropbox link
 zipUrl: "https://www.dropbox.com/scl/fi/0hirekpvmmy81jpn9vgei/UNDERTALE.zip?rlkey=orlz81z7u7o80fr0ncspdrhvx&dl=1",
 
-// Corrected to look inside your own GitHub repo directory for the assets
-baseUrl: "",
+// Force the emulator to lock onto your repository's local folder path
+baseUrl: window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1),
 wasmUrl: "boxedwine.wasm"
 };
 
 function startEmulator() {
 var statusDiv = document.getElementById('status');
 statusDiv.innerHTML = "Downloading & Unpacking Undertale from Dropbox... Please wait.";
-statusDiv.style.pointerEvents = "none"; // Prevent multiple clicks
+statusDiv.style.pointerEvents = "none";
 
-// Inject your local script into the webpage context
+// Inject the matching CSS file into the head dynamically
+var link = document.createElement('link');
+link.rel = 'stylesheet';
+link.href = Config.baseUrl + 'boxedwine.css';
+document.head.appendChild(link);
+
+// Load the engine shell controller out of your repository branch
 var script = document.createElement('script');
-script.src = "boxedwine-shell.js";
+script.src = Config.baseUrl + "boxedwine-shell.js";
 
 script.onload = function() {
-// Reveal the canvas interface frame dynamically once setup finishes
+// Give the 124MB zip file 6 seconds to stream into memory and hide the text banner
 setTimeout(function() {
 statusDiv.style.display = 'none';
 document.getElementById('canvas').style.display = 'block';
-}, 4000);
+}, 6000);
 };
 
 document.body.appendChild(script);
