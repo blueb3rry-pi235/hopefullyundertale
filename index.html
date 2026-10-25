@@ -3,59 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Boxedwine File Path Scanner</title>
-<style>
-body { margin: 0; background: #222; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; }
-#drop-zone { border: 3px dashed #666; padding: 40px; text-align: center; background: #111; margin-bottom: 20px; border-radius: 8px; width: 600px; }
-#output { background: #000; color: #0f0; font-family: monospace; padding: 20px; width: 600px; max-height: 300px; overflow-y: auto; border: 1px solid #333; text-align: left; display: none; }
-</style>
-<!-- Include JSZip library to open and read zip structures dynamically -->
-<script src="https://cloudflare.com"></script>
+<title>Undertale Web Edition</title>
+<link rel="stylesheet" href="boxedwine.css">
 </head>
 <body>
-
-<div id="drop-zone">
-<h3>Boxedwine File Path Scanner</h3>
-<p>Drop your <strong>UNDERTALE.zip</strong> file here to scan its true paths.</p>
-</div>
-
-<div id="output"></div>
+<div id="loading" style="color: white; text-align: center; margin-top: 20%;">Loading Emulator Brain...</div>
+<canvas id="canvas" style="display:none;" width="800" height="600" oncontextmenu="event.preventDefault()"></canvas>
 
 <script>
-var dropZone = document.getElementById('drop-zone');
-var output = document.getElementById('output');
+var Config = {
+// 1. Force the virtual computer to open the Undertale folder directory first
+workingDirectory: "c:\\Undertale",
 
-dropZone.addEventListener('dragover', function(e) { e.preventDefault(); dropZone.style.borderColor = '#0f0'; });
-dropZone.addEventListener('dragleave', function(e) { e.preventDefault(); dropZone.style.borderColor = '#666'; });
-dropZone.addEventListener('drop', function(e) {
-e.preventDefault();
-dropZone.style.borderColor = '#666';
-var files = e.dataTransfer.files;
+// 2. Execute the game from inside that mounted folder path
+arguments: ["c:\\Undertale\\UNDERTALE.exe"],
+canvas: document.getElementById('canvas'),
 
-if (files.length > 0) {
-var file = files[0];
-output.style.display = 'block';
-output.innerHTML = "Scanning zip structure...<br>";
+// Your real Dropbox direct download link
+zipUrl: "https://dropbox.com",
 
-JSZip.loadAsync(file).then(function(zip) {
-output.innerHTML += "<br><strong>FOUND RUNNABLE PATHS:</strong><br>";
-var foundExe = false;
+// Uses global CDN servers to stream the core emulator assets
+baseUrl: "https://boxedwine.org",
+wasmUrl: "https://boxedwine.orgboxedwine.wasm"
+};
 
-zip.forEach(function (relativePath, zipEntry) {
-if (relativePath.toLowerCase().endsWith('.exe')) {
-output.innerHTML += "-> " + relativePath + "<br>";
-foundExe = true;
-}
-});
-
-if (!foundExe) {
-output.innerHTML += "<span style='color:red;'>No .exe files found in this ZIP!</span><br>";
-}
-}).catch(function(err) {
-output.innerHTML += "<span style='color:red;'>Error parsing ZIP: " + err.message + "</span><br>";
-});
-}
+// Reveal the canvas once the engine loads
+window.addEventListener('load', function() {
+setTimeout(function() {
+document.getElementById('loading').style.display = 'none';
+document.getElementById('canvas').style.display = 'block';
+}, 3000);
 });
 </script>
+<script src="https://boxedwine.orgboxedwine.js"></script>
 </body>
 </html>
